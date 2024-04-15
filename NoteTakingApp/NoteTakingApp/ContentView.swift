@@ -38,6 +38,8 @@ struct ContentView: View {
             }.frame(maxWidth: .infinity, alignment: .leading)
             .padding()
         })
+        .navigationBarBackButtonHidden(true)
+
     }
 }
 #Preview {

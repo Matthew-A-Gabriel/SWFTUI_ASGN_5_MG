@@ -9,20 +9,31 @@ import SwiftUI
 
 struct NewNoteView: View {
     @State private var newNoteContent = ""
+    @State var newNoteTitle = ""
+    var customColor : Color = Color(red: 220/255, green: 220/255, blue: 220/255)
     var body: some View {
         NavigationView(content: {
             VStack {
+                Text("New Note")
+                    .font(.title)
+                    .fontWeight(.bold)
+                    .multilineTextAlignment(.leading)
                 HStack {
-                    Text("New Note")
-                        .font(.title)
-                        .fontWeight(.bold)
+                    TextField("Title", text: $newNoteTitle)
+                        .background(customColor)
+                        .frame(maxWidth: 300, minHeight: 40 )
+                        .ignoresSafeArea()
+                        .cornerRadius(10)
+                    
                 }
                 Spacer()
     //            Text Thing here, the box uggh thing.
-                Text("\(newNoteContent)")
-                    .frame(minWidth: 300, minHeight: 550)
+                TextField("Enter Content Here", text: $newNoteContent, axis: .vertical)
+                    .multilineTextAlignment(.center)
+                    .frame(maxWidth: 300, maxHeight: 550)
                     .border(Color.black)
                     .padding()
+                    .lineLimit(nil)
     //            End
 
                 NavigationLink(destination: {
@@ -40,6 +51,8 @@ struct NewNoteView: View {
             }.frame(maxWidth: .infinity, alignment: .leading)
             .padding()
         })
+        .navigationBarBackButtonHidden(true)
+
     }
 }
 
