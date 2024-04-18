@@ -8,8 +8,9 @@
 import SwiftUI
 
 struct NewNoteView: View {
-    @State private var newNoteContent = ""
-    @State var newNoteTitle = ""
+    @Binding var notes: [Note]
+    @State var noteTitle: String = ""
+    @State var noteContent: String = ""
     var customColor : Color = Color(red: 220/255, green: 220/255, blue: 220/255)
     var body: some View {
         NavigationView(content: {
@@ -19,7 +20,7 @@ struct NewNoteView: View {
                     .fontWeight(.bold)
                     .multilineTextAlignment(.leading)
                 HStack {
-                    TextField("Title", text: $newNoteTitle)
+                    TextField("Title", text: $noteTitle)
                         .background(customColor)
                         .frame(maxWidth: 300, minHeight: 40 )
                         .ignoresSafeArea()
@@ -28,7 +29,7 @@ struct NewNoteView: View {
                 }
                 Spacer()
     //            Text Thing here, the box uggh thing.
-                TextField("Enter Content Here", text: $newNoteContent, axis: .vertical)
+                TextField("Enter Content Here", text: $noteContent, axis: .vertical)
                     .multilineTextAlignment(.center)
                     .frame(maxWidth: 300, maxHeight: 550)
                     .border(Color.black)
@@ -36,9 +37,9 @@ struct NewNoteView: View {
                     .lineLimit(nil)
     //            End
 
-                NavigationLink(destination: {
-                        ContentView()
-                    }, label: {
+                Button(action: {
+                    notes.append(Note(leTitle: noteTitle, content: noteContent))
+                },label: {
                     Text("Add Note")
                         .foregroundColor(.white)
                         .padding(.vertical)
@@ -48,14 +49,14 @@ struct NewNoteView: View {
                         .frame(maxWidth: .infinity)
                         .font(.system(size: 20))
                     })
+
             }.frame(maxWidth: .infinity, alignment: .leading)
             .padding()
         })
-        .navigationBarBackButtonHidden(true)
 
     }
 }
 
 #Preview {
-    NewNoteView()
+    NewNoteView(notes: .constant([]))
 }

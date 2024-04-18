@@ -7,7 +7,17 @@
 
 import SwiftUI
 
+struct Note{
+    var leTitle: String
+    var content: String
+}
+
+
 struct ContentView: View {
+    @State private var numberOfNotes : Int = 0
+    @State private var notesMadeTitle : [String] = ["ahhhhh", "agfds"]
+    @State private var notesMadeContents : [String] = [""]
+    @State private var notes: [Note] = []
     var body: some View {
         NavigationView(content: {
             VStack {
@@ -19,11 +29,20 @@ struct ContentView: View {
                 }
                 Spacer()
     //            Text Thing here, the box uggh thing.
-                    
+                
+                   
+                List{
+                    ForEach(notes.indices, id: \.self){index in
+                        Text("Title: \(notes[index].leTitle)")
+                        Text("Content: \(notes[index].content)")
+                    }
+                    .onDelete(perform: DeleteItem)
+                    .frame(width: 100, height: 50)
+                }
     //            End
 
                 NavigationLink(destination: {
-                        NewNoteView()
+                    NewNoteView(notes: $notes)
                     }, label: {
                     Text("Add Task")
                         .frame(width:200, height: 125)
@@ -34,12 +53,16 @@ struct ContentView: View {
                         .cornerRadius(10)
                         .font(.system(size: 30))
                     })
-                .position(CGPoint(x: 175.0, y: 660.0))
+                .position(CGPoint(x: 175.0, y: 325.0))
             }.frame(maxWidth: .infinity, alignment: .leading)
             .padding()
         })
         .navigationBarBackButtonHidden(true)
 
+    }
+    func DeleteItem(offset: IndexSet){
+        notes.remove(atOffsets: offset)
+        notes.remove(atOffsets: offset)
     }
 }
 #Preview {
