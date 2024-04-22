@@ -7,40 +7,41 @@
 
 import SwiftUI
 
+//Note Struct for the Data Storage and all that
 struct Note{
     var leTitle: String
     var content: String
 }
 
-
 struct ContentView: View {
-    @State private var numberOfNotes : Int = 0
-    @State private var notesMadeTitle : [String] = ["ahhhhh", "agfds"]
-    @State private var notesMadeContents : [String] = [""]
+//    Call Struct into this view
     @State private var notes: [Note] = []
     var body: some View {
+//        Nav View so I can have Nav Links
         NavigationView(content: {
             VStack {
                 HStack {
+//                    tbh idk why I put a HStack, This is the title right here
                     Text("NOTES")
                         .font(.title)
                         .fontWeight(.bold)
                         .ignoresSafeArea()
                 }
+//                space
                 Spacer()
-    //            Text Thing here, the box uggh thing.
-                
-                   
+//                   lists all the notes you make, you can then view them.
                 List{
-                    ForEach(notes.indices, id: \.self){index in
-                        Text("Title: \(notes[index].leTitle)")
-                        Text("Content: \(notes[index].content)")
+                    ForEach(notes.indices, id: \.self){
+                        index in
+                        NavigationLink("\(notes[index].leTitle)", destination: DetailNoteView(notes: $notes, noteVar: notes[index]))
+                            .font(.title)
+                        Text("\(notes[index].content)")
+                            
                     }
                     .onDelete(perform: DeleteItem)
                     .frame(width: 100, height: 50)
                 }
-    //            End
-
+//              This one is for going to the page that adds the Notes
                 NavigationLink(destination: {
                     NewNoteView(notes: $notes)
                     }, label: {
@@ -58,7 +59,7 @@ struct ContentView: View {
             .padding()
         })
         .navigationBarBackButtonHidden(true)
-
+//    when you delete , it deletes
     }
     func DeleteItem(offset: IndexSet){
         notes.remove(atOffsets: offset)
